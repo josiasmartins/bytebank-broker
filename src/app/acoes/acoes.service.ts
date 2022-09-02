@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators'
-import { Acao } from './modelo/acoes';
+import { map, pluck, tap } from 'rxjs/operators'
+import { Acao, AcoesAPI } from './modelo/acoes';
 
 const API = "http://localhost:3000/acoes"
 
@@ -27,8 +27,13 @@ export class AcoesService {
    * informações no tempo, como, por exemplo, os eventos de digitação de um campo.
    */
   public getAcoes() {
-    return this.httpClient.get<any>(API)
-      .pipe(map((acoes) => acoes.sort((acaoA, acaoB) => this.ordenaPorCodigo(acaoA, acaoB))));
+    return this.httpClient.get<AcoesAPI>(API)
+      .pipe(
+        tap((value) => console.log(value)),
+        // map((api) => api.payload),
+        // outra forma de fazer com plump
+        pluck('payload'),
+        map((acoes) => acoes.sort((acaoA, acaoB) => this.ordenaPorCodigo(acaoA, acaoB))));
   }
 
   private ordenaPorCodigo(acaoA: Acao, acaoB: Acao) {

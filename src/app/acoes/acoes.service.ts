@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+const API = "http://localhost:3000/acoes"
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +13,6 @@ export class AcoesService {
   ) { }
 
   public getAcoes() {
-    return this.httpClient.get<any>('http://locahost:3000/acoes');
+    return this.httpClient.get<any>(API);
   }
 }

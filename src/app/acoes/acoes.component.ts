@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Acoes } from './modelo/acoes';
 import { AcoesService } from './acoes.service';
 import { merge, Subscription } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acoes',
@@ -16,8 +16,12 @@ export class AcoesComponent {
   public todaAcoes$ = this.acoesService.getAcoes().pipe(tap(() => console.log('fluxo inicial')), tap(console.log));
   public filtraPeloInput$ = this.acoesInput.valueChanges.pipe(
     tap(() => console.log('fluxo filtro')),
+    tap(console.log),
+    filter((valorDigitado) => valorDigitado.length >= 3 || !valorDigitado.length),
+    // switch: alterna o fluxo da digitação para o fluxo da requisição ao servidor utilizando o operador switchMap
     switchMap((valorDigitado) => this.acoesService.getAcoes(valorDigitado))
   );
+  // merger: unir fluxos de informações utilizando a função merge.
   public acoes$ = merge(this.todaAcoes$, this.filtraPeloInput$)
 
   constructor(

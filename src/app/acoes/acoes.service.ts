@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, pluck, tap } from 'rxjs/operators'
 import { Acao, AcoesAPI } from './modelo/acoes';
 
@@ -26,8 +26,9 @@ export class AcoesService {
    * O observable é um tipo de objeto que representa um fluxo de 
    * informações no tempo, como, por exemplo, os eventos de digitação de um campo.
    */
-  public getAcoes() {
-    return this.httpClient.get<AcoesAPI>(API)
+  public getAcoes(valor?: string) {
+    const params =  valor ? new HttpParams().append('valor', valor) : undefined;
+    return this.httpClient.get<AcoesAPI>(API, { params: params })
       .pipe(
         tap((value) => console.log(value)),
         // map((api) => api.payload),

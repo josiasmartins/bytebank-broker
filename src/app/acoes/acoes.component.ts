@@ -20,7 +20,9 @@ export class AcoesComponent {
     debounceTime(ESPERA_DIGITACAO),
     tap(() => console.log('fluxo filtro')),
     tap(console.log),
+    // filter: O operador filter faz com que o fluxo vá para o próximo passo somente se o retorno da função interna retorne verdadeiro
     filter((valorDigitado) => valorDigitado.length >= 3 || !valorDigitado.length),
+    //distinctUntilChanged: operador distinctUntilChanged para avaliar se o termo é igual ao termo anterior, e assim não realizar a requisição
     distinctUntilChanged(),
     // switch: alterna o fluxo da digitação para o fluxo da requisição ao servidor utilizando o operador switchMap
     switchMap((valorDigitado) => this.acoesService.getAcoes(valorDigitado))
